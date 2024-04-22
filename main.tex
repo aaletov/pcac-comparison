@@ -4,7 +4,7 @@
 \linespread{1.5}
 
 \usepackage{cmap}
-\usepackage{lipsum}  
+\usepackage{lipsum}
 \usepackage{chngcntr}\counterwithout{table}{chapter}
 
 \usepackage[utf8]{inputenc}
@@ -38,7 +38,7 @@
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\headrulewidth}{0pt}
 \fancyhf{}
 \fancyfoot[C]{\thepage}
 
@@ -66,13 +66,13 @@
 
 
 % TABLE OF CONTENT CONFIG
-\usepackage{tocloft} 
+\usepackage{tocloft}
 
 % disables bold in table of content
 \newcommand*{\disableboldchapterintoc}{%
 	\addtocontents{toc}{\string\renewcommand{\protect\cftchappagefont}{\protect\normalfont}}
 	\addtocontents{toc}{\string\renewcommand{\protect\cftchapfont}{\protect\normalfont}}
-	\addtocontents{toc}{\string\renewcommand{\protect\cftchapleader}{\protect\normalfont\protect\cftdotfill{\protect\cftsecdotsep}}}% 
+	\addtocontents{toc}{\string\renewcommand{\protect\cftchapleader}{\protect\normalfont\protect\cftdotfill{\protect\cftsecdotsep}}}%
 }
 
 \renewcommand{\cftaftertoctitle}{\hfill}
@@ -157,7 +157,7 @@ showstringspaces=false,       % показывать или нет пробел�
 showtabs=false,               % показывать или нет табуляцию в строках
 frame=single,                 % рисовать рамку вокруг кода
 tabsize=2,                    % размер табуляции по умолчанию равен 2 пробелам
-captionpos=t,                 % позиция заголовка вверху [t] или внизу [b] 
+captionpos=t,                 % позиция заголовка вверху [t] или внизу [b]
 breaklines=true,              % автоматически переносить строки (да\нет)
 breakatwhitespace=false,      % переносить строки только если есть пробел
 escapeinside={\%*}{*)}        % если нужно добавить комментарии в коде
