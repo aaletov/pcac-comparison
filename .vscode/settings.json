@@ -16,25 +16,40 @@
     },
     "latex-workshop.latex.recipes": [
 		{
-			"name": "BUILD",
+			"name": "xelatex",
 			"tools": [
-				"xelatexmk"
+				"xelatex"
 			]
 		},
+		{
+			"name": "toolchain",
+			"tools": [
+				"xelatex",
+				"bibtex",
+				"xelatex",
+				"xelatex"
+			]
+		}
     ],
     "latex-workshop.latex.tools": [
 		{
-			"name": "xelatexmk",
-			"command": "latexmk",
+			"name": "xelatex",
+			"command": "xelatex",
 			"args": [
-				"-xelatex",
 				"-synctex=1",
 				"-interaction=nonstopmode",
 				"-file-line-error",
-				"-outdir=%OUTDIR%",
-				"%DOC%"
+				"%DOC%.tex"
 			],
 			"env": {}
 		},
+		{
+			"name": "bibtex",
+			"command": "bibtex",
+			"args": [
+				"%DOCFILE%"
+			],
+			"env": {}
+		}
     ]
 }
