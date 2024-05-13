@@ -49,6 +49,7 @@
 }
 
 \usepackage{titletoc, amsmath, lastpage} %подключаем нужные пакеты расширений
+\usepackage{amsfonts} % для mathbb и пр.
 \usepackage[raggedright]{titlesec} % не переносить заголовки
 
 \titleformat{\chapter}[block]{\centering\Large\bfseries}{\MakeUppercase{\chaptertitlename}\ \thechapter . }{0pt}{\MakeUppercase}
@@ -171,25 +172,25 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
   \input{settings.tex}
   \pagenumbering{gobble}
 
-  \begin{spacing}{1}
-    \input{pages/titlepage}
-  \end{spacing}
+  % \begin{spacing}{1}
+  %   \input{pages/titlepage}
+  % \end{spacing}
 
 
-  \newpage
-  \input{pages/task}
+  % \newpage
+  % \input{pages/task}
 
   \newpage
   \sloppy
 
-  \chapter*{Реферат}
-    \input{pages/1-referat-ru.tex}
+  % \chapter*{Реферат}
+  %   \input{pages/1-referat-ru.tex}
 
-    \newpage
-  \chapter*{Abstract}
-    \begin{otherlanguage}{english}
-      \input{pages/1-referat-en.tex}
-    \end{otherlanguage}
+  %   \newpage
+  % \chapter*{Abstract}
+  %   \begin{otherlanguage}{english}
+  %     \input{pages/1-referat-en.tex}
+  %   \end{otherlanguage}
 
     \newpage
     \disableboldchapterintoc
@@ -200,7 +201,7 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
     \newpage
 
     \pagenumbering{arabic}
-    \setcounter{page}{6}
+    \setcounter{page}{4}
 
     % введение
     \chaperWONum{Введение}
@@ -217,10 +218,10 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
     \chaperWONum{Список источников}
     \printbibliography[heading=none]
 
-    \newpage
-    \appendix
-    \renewcommand{\thechapter}{\Asbuk{chapter}}
-    \addtocontents{toc}{\protect\renewcommand{\protect\chaptername}{Приложение}}
-    \input{pages/5-appendix.tex}
+    % \newpage
+    % \appendix
+    % \renewcommand{\thechapter}{\Asbuk{chapter}}
+    % \addtocontents{toc}{\protect\renewcommand{\protect\chaptername}{Приложение}}
+    % \input{pages/5-appendix.tex}
 
 \end{document}
