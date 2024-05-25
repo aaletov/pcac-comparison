@@ -1,0 +1,12 @@
+$ python3 -m open_pcc_metric --help
+Usage: python -m open_pcc_metric [OPTIONS]
+
+Options:
+  --ocloud TEXT      Original point cloud.  [required]
+  --pcloud TEXT      Processed point cloud.  [required]
+  --color [rgb|ycc]  Report color distortions as well.
+  --hausdorff        Report hausdorff metric as well. If --point-to-plane is
+                     provided, then hausdorff point-to-plane would be reported
+                     too
+  --point-to-plane   Report point-to-plane distance as well.
+  --help             Show this message and exit.
