@@ -32,6 +32,10 @@
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 \usepackage{caption, subcaption}
+
+% no word breaks
+\usepackage[none]{hyphenat}%%%%
+
 \captionsetup[table]{justification=raggedright,singlelinecheck=false}
 
 \usepackage{xltabular, tabularx}
@@ -223,10 +227,10 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
     \chaperWONum{Список источников}
     \printbibliography[heading=none]
 
-    \newpage
-    \appendix
-    \renewcommand{\thechapter}{\Asbuk{chapter}}
-    \addtocontents{toc}{\protect\renewcommand{\protect\chaptername}{Приложение}}
-    \input{pages/5-appendix.tex}
+    % \newpage
+    % \appendix
+    % \renewcommand{\thechapter}{\Asbuk{chapter}}
+    % \addtocontents{toc}{\protect\renewcommand{\protect\chaptername}{Приложение}}
+    % \input{pages/5-appendix.tex}
 
 \end{document}
