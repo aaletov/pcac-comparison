@@ -12,6 +12,7 @@
 \usepackage[english,russian]{babel}
 \usepackage{fontspec}
 \setmainfont{Times New Roman}
+\setmonofont{Consolas}
 
 \usepackage{indentfirst}
 
@@ -20,6 +21,7 @@
 
 \usepackage{multicol}
 \usepackage{listings}
+
 \usepackage{graphicx}
 \graphicspath{ {assets/} }
 \usepackage{placeins}
@@ -148,8 +150,8 @@
 \renewcommand\thesubfigure{\asbuk{subfigure}}
 
 \lstset{ %
-language=java,                % выбор языка для подсветки (здесь это С)
-basicstyle=\small\sffamily,   % размер и начертание шрифта для подсветки кода
+% language=java,                % выбор языка для подсветки (здесь это С)
+basicstyle=\small\ttfamily,   % размер и начертание шрифта для подсветки кода
 numbers=left,                 % где поставить нумерацию строк (слева\справа)
 numberstyle=\tiny,            % размер шрифта для номеров строк
 stepnumber=1,                 % размер шага между двумя номерами строк
