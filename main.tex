@@ -192,9 +192,6 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
   \newpage
   \sloppy
 
-  \chapter*{Список используемых сокращений}
-    \input{pages/0-abbrev.tex}
-
     \newpage
   \chapter*{Реферат}
     \input{pages/1-referat-ru.tex}
@@ -212,11 +209,13 @@ escapeinside={\%*}{*)}        % если нужно добавить комме�
 
     \tableofcontents
     \newpage
-
     \pagenumbering{arabic}
-    \setcounter{page}{7}
+    \setcounter{page}{8}
+    \chaperWONum{ОБОЗНАЧЕНИЯ И СОКРАЩЕНИЯ}
+    \input{pages/0-abbrev.tex}
 
     % введение
+    \newpage
     \chaperWONum{Введение}
     \input{pages/2-introduction.tex}
 
