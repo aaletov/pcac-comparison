@@ -1,0 +1,62 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage{cmap}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{fontspec}
+\usepackage{tikz}
+\setsansfont{Times New Roman}
+\setmonofont{Consolas}
+
+\usetheme{metropolis}
+
+\title{Сравнение методов сжатия атрибутов облаков точек}
+\date{\today}
+\author{Поздняков Артемий Анатольевич}
+\institute{Высшая школа программной инженерии}
+\begin{document}
+  \input{settings.tex}
+
+  \begin{frame}
+
+    \begin{center}
+      \begin{scriptsize}
+        Министерство науки и высшего образования Российской Федерации\\
+        Санкт-Петербургский политехнический университет Петра Великого\\
+        Институт компьютерных наук и кибербезопасности\\
+        Высшая школа программной инженерии\\[5\baselineskip]
+      \end{scriptsize}
+
+      \Large\textbf{\Theme{}}
+    \end{center}
+
+    \begin{flushright}
+      \begin{scriptsize}
+        Выполнил студент: \textbf{\AuthorFull{}}, гр. \Group{}\\
+        Научный руководитель: \SupervisorPosition{} \textbf{\SupervisorFull{}}\\
+        Направление подготовки: \ProfileCode{}, \textbf{\ProfileName{}}\\
+      \end{scriptsize}
+    \end{flushright}
+
+    \mbox{}\vfill
+
+    \begin{center}
+      \begin{scriptsize}
+        Санкт-Петербург \\
+        \the\year{}
+      \end{scriptsize}
+    \end{center}
+
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[xshift=1mm, yshift=-1mm, anchor=north west] at (current page.north west){%
+        \includegraphics[width=20mm]{assets/heraldic.png}};
+    \end{tikzpicture}
+
+  \end{frame}
+
+  \section{First Section}
+  \begin{frame}{First Frame}
+    Hello, world!
+  \end{frame}
+\end{document}
