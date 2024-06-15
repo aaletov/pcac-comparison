@@ -38,6 +38,10 @@
 \setsansfont{Times New Roman}
 \setmonofont{Consolas}
 
+% no indent for itemize
+\settowidth{\leftmargini}{\usebeamertemplate{itemize item}}
+\addtolength{\leftmargini}{\labelsep}
+
 \usetheme{metropolis}
 
 \title{Сравнение методов сжатия атрибутов облаков точек}
@@ -47,7 +51,7 @@
 \begin{document}
   \input{settings.tex}
 
-  \begin{frame}
+  \begin{frame}[noframenumbering, plain]
 
     \begin{center}
       \begin{scriptsize}
@@ -84,41 +88,54 @@
 
   \end{frame}
 
+  \setcounter{framenumber}{2}
+
   \begin{frame}{Актуальность}
-    Растущая популярность технологий компьютерного зрения и расширенной
-    реальности влечёт за собой потребность в способах компактного хранения и
-    передачи облаков точек
+    Разработка программы для оценки работы PCC-кодеков - актуальная задача.
 
-    В настоящее время появляется большое количество кодеков, предназначенных для
-    сжатия облаков точек и их атрибутов (PCC-кодеков), что делает актуальной
-    задачей разработку программы для оценки работы PCC-кодеков
+    \begin{itemize}
+      \item Популярность технологий компьютерного зрения и расширенной
+      реальности растёт;
+      \item Появляется большое количество кодеков, предназначенных для сжатия
+      облаков точек и их атрибутов (PCC-кодеков);
+    \end{itemize}
 
-    Подобная программа может быть использована исследователями для подсчёта
-    метрик разрабатываемых ими кодеков
+    \metroset{block=fill}
+    \begin{block}{Использование}
+      Подобная программа может быть использована исследователями для подсчёта
+      метрик разрабатываемых ими кодеков.
+    \end{block}
   \end{frame}
 
   \begin{frame}{Цели и задачи}
 
   \textbf{Цель работы} - разработка подхода к сравнению методов сжатия атрибутов
-  облаков точек. В рамках данной работы необходимо решить следующие задачи:
+  облаков точек.
+
+  Задачи:
 
   \begin{itemize}
-      \item Проанализировать системы оценки качества сжатия облаков точек
+      \item Проанализировать системы оценки качества сжатия облаков точек;
       \item Изучить релевантные метрики, отображающие эффективность и качество
-      сжатия атрибутов облаков точек
-      \item Разработать программу подсчёта метрик
-      \item Получить метрики для отобранных PCC-кодеков
-      \item Проанализировать результаты работы
+      сжатия атрибутов облаков точек;
+      \item Разработать программу подсчёта метрик;
+      \item Получить метрики для отобранных PCC-кодеков;
+      \item Проанализировать результаты работы;
   \end{itemize}
 
   \end{frame}
 
   \begin{frame}{Оценка качества сжатия}
-    Реконструированное облако - облако точек, полученное в результате компрессии
-    и декомпрессии оригинального облака точек.
+    \metroset{block=fill}
+    \begin{block}{Определение}
+      Реконструированное облако - облако точек, полученное в результате
+      компрессии и декомпрессии оригинального облака точек.
+    \end{block}
 
-    Показателем качества сжатия являются значения отобранных метрик для пары
-    оригинальное и реконструированное облако.
+    \begin{itemize}
+      \item Показателем качества сжатия являются значения отобранных метрик для
+      пары оригинальное и реконструированное облако.
+    \end{itemize}
   \end{frame}
 
   \begin{frame}{Сравнение альтернативных решений}
@@ -139,7 +156,7 @@
         \hline
       \end{xltabular}
       \caption{
-          Характеристики различных рассмотренных систем.
+          Характеристики различных рассмотренных систем
       }
     \end{table}
   \end{frame}
@@ -149,8 +166,8 @@
     решению:
 
     \begin{itemize}
-        \item Возможность вычисления стандартных метрик искажения геом. структуры (MSE и PSNR,
-        метрика Хаусдорфа) геометрической структуры;
+        \item Возможность вычисления стандартных метрик искажения геом.
+        структуры (MSE и PSNR, метрика Хаусдорфа);
         \item Возможность вычисления проецированных значений отклонения;
         \item Возможность вычисления искажения цветов в цветовых схемах RGB и Y'CbCr;
         \item Использование архитектуры, допускающей дальнейшее расширение
@@ -163,7 +180,7 @@
   \begin{frame}{Архитектура разрабатываемого решения}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\linewidth]{assets/classes.png}
+        \includegraphics[width=\linewidth]{assets/classes.png}
         \caption{Диаграмма классов разработанного приложения}
         \label{img:metric_classes}
     \end{figure}
@@ -171,33 +188,35 @@
 
   \begin{frame}[fragile]{Алгоритм внедрения зависимостей}
     \begin{lstlisting}[caption={
-      Алгоритм внедрения зависимостей.
-    }, label={lst:calculator_recursive_calculate}, basicstyle=\tiny\ttfamily]
-    if metric._key() in self._calculated_metrics:
-        return self._calculated_metrics[metric._key()]
+      Алгоритм внедрения зависимостей
+    }, label={lst:calculator_recursive_calculate},
+    basicstyle=\tiny\ttfamily,
+    gobble=6]
+      if metric._key() in self._calculated_metrics:
+          return self._calculated_metrics[metric._key()]
 
-    if isinstance(metric, PrimaryMetric):
-        metric = typing.cast(PrimaryMetric, metric)
-        metric.calculate(self._cloud_pair)
-        self._calculated_metrics[metric._key()] = metric
-        return metric
+      if isinstance(metric, PrimaryMetric):
+          metric = typing.cast(PrimaryMetric, metric)
+          metric.calculate(self._cloud_pair)
+          self._calculated_metrics[metric._key()] = metric
+          return metric
 
-    calculated_deps = {}
-    for dep_key, dep_metric in metric._get_dependencies().items():
-        calculated_dep_metric = self._metric_recursive_calculate(
-            metric=dep_metric,
-        )
-        calculated_deps[dep_key] = calculated_dep_metric
+      calculated_deps = {}
+      for dep_key, dep_metric in metric._get_dependencies().items():
+          calculated_dep_metric = self._metric_recursive_calculate(
+              metric=dep_metric,
+          )
+          calculated_deps[dep_key] = calculated_dep_metric
 
-    metric.calculate(**calculated_deps)
-    self._calculated_metrics[metric._key()] = metric
+      metric.calculate(**calculated_deps)
+      self._calculated_metrics[metric._key()] = metric
     \end{lstlisting}
   \end{frame}
 
   \begin{frame}{Консольное приложение}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\linewidth]{assets/open_pcc_metric_help.png}
+        \includegraphics[width=0.9\linewidth]{assets/open_pcc_metric_help.png}
         \caption{Help-сообщение программы}
         \label{img:pcc_metric_help}
     \end{figure}
@@ -206,7 +225,7 @@
   \begin{frame}{Консольное приложение}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\linewidth]{assets/open_pcc_metric_output.png}
+        \includegraphics[width=0.9\linewidth]{assets/open_pcc_metric_output.png}
         \caption{Пример вывода программы}
         \label{img:pcc_metric_output}
     \end{figure}
@@ -222,8 +241,8 @@
     \begin{columns}
       \column{0.38\linewidth}
         PCCArena - система бенчмаркинга PCC-кодеков. Данная система использует
-        mpeg\_pcc\_dmetric для вычисления математически-обоснованных метрик
-        (MSE, PSNR, и т.д.).
+        mpeg\_pcc\_dmetric для вычисления стандартных метрик (MSE, PSNR, и
+        т.д.).
        \column{0.58\linewidth}
         \begin{figure}
           \centering
@@ -244,13 +263,18 @@
   \end{frame}
 
   \begin{frame}{Описание проведенных экспериментов}
-    С помощью модифицированной системы PCCArena была произведена оценка кодеков
-    TMC13 и Draco.
+    С помощью модифицированной системы PCCArena был произведен набор измерений.
 
-    Использовался датасет ShapeNet.
+    \begin{itemize}
+      \item Произведена оценка кодеков TMC13 и Draco;
+      \item Использовался датасет ShapeNet;
+      \item Для каждой метрики была построена зависимость от битрейта;
+    \end{itemize}
 
-    Для каждой метрики строится зависимость от битрейта - количества бит,
-    затраченных на кодирование одной точки.
+    \metroset{block=fill}
+    \begin{block}{Определение}
+      Битрейт - количество бит, затраченных на кодирование одной точки.
+    \end{block}
   \end{frame}
 
   \begin{frame}{Результаты для расстояния Чамфера}
@@ -265,7 +289,7 @@
             \caption{}
         \end{subfigure}
         \caption{ (a) Зависимость расстояния Чамфера от битрейта. (b) Зависимость
-        CD-PSNR от битрейта. }
+        CD-PSNR от битрейта }
         \label{img:pcc_arena_cd_bpp}
     \end{figure}
   \end{frame}
@@ -282,7 +306,7 @@
             \caption{}
         \end{subfigure}
         \caption{ (a) Зависимость метрики Хаусдорфа от битрейта. (b) Зависимость
-        проецированной метрики Хаусдорфа от битрейта. }
+        проецированной метрики Хаусдорфа от битрейта }
         \label{img:pcc_arena_hd}
     \end{figure}
   \end{frame}
@@ -291,22 +315,28 @@
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.49\linewidth]{assets/approx_y_psnr.png}
-        \caption{ Зависимость Y'-PSNR от битрейта. }
+        \caption{ Зависимость Y'-PSNR от битрейта }
         \label{img:pcc_arena_y_psnr}
     \end{figure}
   \end{frame}
 
   \begin{frame}{Выводы и дальнейшие шаги}
-    В данной работе был проведён анализ существующих систем оценки методов сжатия
-    облаков точек и их атрибутов. Разработана программа для оценки качества облака
-    точек при наличии оригинального облака точек. Произведён сравнительный анализ
-    кодеков Draco и TMC13. Полученные данные позволяют судить о качестве сжатия
-    облаков точек данными кодеками при различной степени сжатия. Разработанное
-    решение упростит оценку методов сжатия атрибутов облаков точек и может быть
-    полезным исследователям, ведущим разработки в данной области.
+    \begin{itemize}
+      \item Проведён анализ существующих систем оценки методов сжатия облаков
+      точек и их атрибутов;
+      \item Разработана программа для оценки качества облака точек при наличии
+      оригинального облака точек;
+      \item Произведён сравнительный анализ кодеков Draco и TMC13;
+    \end{itemize}
 
-    В рамках дальнейшей работы в программу могут быть добавлены метрики, учитывающие
-    более высокоуровневые признаки облаков точек и дающие более подробную оценку
-    качества их сжатия.
+    Разработанное решение упростит оценку методов сжатия атрибутов облаков точек
+    и может быть полезно исследователям, ведущим разработки в данной области.
+
+    Дальнейшие шаги:
+
+    \begin{itemize}
+      \item Могут быть добавлены метрики, учитывающие более высокоуровневые
+      признаки облаков точек и дающие более подробную оценку качества их сжатия;
+    \end{itemize}
   \end{frame}
 \end{document}
