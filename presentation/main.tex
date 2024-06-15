@@ -6,6 +6,35 @@
 \usepackage[english,russian]{babel}
 \usepackage{fontspec}
 \usepackage{tikz}
+
+\usepackage{color}
+\usepackage{listings}
+
+\lstset{ %
+    language=python,                % выбор языка для подсветки (здесь это С)
+    basicstyle=\small\ttfamily,   % размер и начертание шрифта для подсветки кода
+    numbers=left,                 % где поставить нумерацию строк (слева\справа)
+    numberstyle=\tiny,            % размер шрифта для номеров строк
+    stepnumber=1,                 % размер шага между двумя номерами строк
+    firstnumber=1,
+    numberfirstline=true
+    numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+    backgroundcolor=\color{white},% цвет фона подсветки - используем \usepackage{color}
+    showspaces=false,             % показывать или нет пробелы специальными отступами
+    showstringspaces=false,       % показывать или нет пробелы в строках
+    showtabs=false,               % показывать или нет табуляцию в строках
+    frame=single,                 % рисовать рамку вокруг кода
+    tabsize=2,                    % размер табуляции по умолчанию равен 2 пробелам
+    captionpos=b,                 % позиция заголовка вверху [t] или внизу [b]
+    breaklines=true,              % автоматически переносить строки (да\нет)
+    breakatwhitespace=false      % переносить строки только если есть пробел
+}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+\usepackage{xltabular, tabularx}
+
 \setsansfont{Times New Roman}
 \setmonofont{Consolas}
 
@@ -55,8 +84,229 @@
 
   \end{frame}
 
-  \section{First Section}
-  \begin{frame}{First Frame}
-    Hello, world!
+  \begin{frame}{Актуальность}
+    Растущая популярность технологий компьютерного зрения и расширенной
+    реальности влечёт за собой потребность в способах компактного хранения и
+    передачи облаков точек
+
+    В настоящее время появляется большое количество кодеков, предназначенных для
+    сжатия облаков точек и их атрибутов (PCC-кодеков), что делает актуальной
+    задачей разработку программы для оценки работы PCC-кодеков
+
+    Подобная программа может быть использована исследователями для подсчёта
+    метрик разрабатываемых ими кодеков
+  \end{frame}
+
+  \begin{frame}{Цели и задачи}
+
+  \textbf{Цель работы} - разработка подхода к сравнению методов сжатия атрибутов
+  облаков точек. В рамках данной работы необходимо решить следующие задачи:
+
+  \begin{itemize}
+      \item Проанализировать системы оценки качества сжатия облаков точек
+      \item Изучить релевантные метрики, отображающие эффективность и качество
+      сжатия атрибутов облаков точек
+      \item Разработать программу подсчёта метрик
+      \item Получить метрики для отобранных PCC-кодеков
+      \item Проанализировать результаты работы
+  \end{itemize}
+
+  \end{frame}
+
+  \begin{frame}{Оценка качества сжатия}
+    Реконструированное облако - облако точек, полученное в результате компрессии
+    и декомпрессии оригинального облака точек.
+
+    Показателем качества сжатия являются значения отобранных метрик для пары
+    оригинальное и реконструированное облако.
+  \end{frame}
+
+  \begin{frame}{Сравнение альтернативных решений}
+    \begin{table}
+      \begin{xltabular}{\linewidth}{|l|X|X|}
+        \hline
+        & mpeg\_pcc\_dmetric & geo\_dist \\
+        \hline
+        Полнота метрик & ± & ± \\
+        \hline
+        Оценка искажения атрибутов & + & - \\
+        \hline
+        Поддерживаемость & + & - \\
+        \hline
+        Возможность расширения & - & - \\
+        \hline
+        Открытый исх. код & - & - \\
+        \hline
+      \end{xltabular}
+      \caption{
+          Характеристики различных рассмотренных систем.
+      }
+    \end{table}
+  \end{frame}
+
+  \begin{frame}{Требования}
+    В результате анализа определены следующие требования к разрабатываемому
+    решению:
+
+    \begin{itemize}
+        \item Возможность вычисления стандартных метрик искажения геом. структуры (MSE и PSNR,
+        метрика Хаусдорфа) геометрической структуры;
+        \item Возможность вычисления проецированных значений отклонения;
+        \item Возможность вычисления искажения цветов в цветовых схемах RGB и Y'CbCr;
+        \item Использование архитектуры, допускающей дальнейшее расширение
+        приложения;
+        \item Наличие тестов;
+        \item Использование лицензии MIT;
+    \end{itemize}
+  \end{frame}
+
+  \begin{frame}{Архитектура разрабатываемого решения}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{assets/classes.png}
+        \caption{Диаграмма классов разработанного приложения}
+        \label{img:metric_classes}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}[fragile]{Алгоритм внедрения зависимостей}
+    \begin{lstlisting}[caption={
+      Алгоритм внедрения зависимостей.
+    }, label={lst:calculator_recursive_calculate}, basicstyle=\tiny\ttfamily]
+    if metric._key() in self._calculated_metrics:
+        return self._calculated_metrics[metric._key()]
+
+    if isinstance(metric, PrimaryMetric):
+        metric = typing.cast(PrimaryMetric, metric)
+        metric.calculate(self._cloud_pair)
+        self._calculated_metrics[metric._key()] = metric
+        return metric
+
+    calculated_deps = {}
+    for dep_key, dep_metric in metric._get_dependencies().items():
+        calculated_dep_metric = self._metric_recursive_calculate(
+            metric=dep_metric,
+        )
+        calculated_deps[dep_key] = calculated_dep_metric
+
+    metric.calculate(**calculated_deps)
+    self._calculated_metrics[metric._key()] = metric
+    \end{lstlisting}
+  \end{frame}
+
+  \begin{frame}{Консольное приложение}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{assets/open_pcc_metric_help.png}
+        \caption{Help-сообщение программы}
+        \label{img:pcc_metric_help}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}{Консольное приложение}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{assets/open_pcc_metric_output.png}
+        \caption{Пример вывода программы}
+        \label{img:pcc_metric_output}
+    \end{figure}
+  \end{frame}
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \begin{frame}{Метрики разработанного ПО}
+  Тут про объем реализации (1к строк кода), тесты, CI/CD, много картинок, пару
+  красивых слов.
+  \end{frame}
+
+  \begin{frame}{PCCArena}
+    \begin{columns}
+      \column{0.38\linewidth}
+        PCCArena - система бенчмаркинга PCC-кодеков. Данная система использует
+        mpeg\_pcc\_dmetric для вычисления математически-обоснованных метрик
+        (MSE, PSNR, и т.д.).
+       \column{0.58\linewidth}
+        \begin{figure}
+          \centering
+          \includegraphics[width=\linewidth]{assets/pcc_arena_github.jpg}
+          \caption{Репозиторий PCCArena на GitHub}
+        \end{figure}
+     \end{columns}
+
+  \end{frame}
+
+  \begin{frame}{Архитектура PCCArena}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{assets/pcc_arena_architecture.png}
+        \caption{Архитектура PCCArena}
+        \label{img:pcc_arena_architecture}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}{Описание проведенных экспериментов}
+    С помощью модифицированной системы PCCArena была произведена оценка кодеков
+    TMC13 и Draco.
+
+    Использовался датасет ShapeNet.
+
+    Для каждой метрики строится зависимость от битрейта - количества бит,
+    затраченных на кодирование одной точки.
+  \end{frame}
+
+  \begin{frame}{Результаты для расстояния Чамфера}
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{assets/approx_cd_p2pt.png}
+            \caption{}
+        \end{subfigure}
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{assets/approx_cdpsnr_p2pt.png}
+            \caption{}
+        \end{subfigure}
+        \caption{ (a) Зависимость расстояния Чамфера от битрейта. (b) Зависимость
+        CD-PSNR от битрейта. }
+        \label{img:pcc_arena_cd_bpp}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}{Результаты для метрики Хаусдорфа и нормалей}
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{assets/approx_h_p2pt.png}
+            \caption{}
+        \end{subfigure}
+        \begin{subfigure}{0.49\textwidth}
+            \includegraphics[width=\linewidth]{assets/approx_h_p2pl.png}
+            \caption{}
+        \end{subfigure}
+        \caption{ (a) Зависимость метрики Хаусдорфа от битрейта. (b) Зависимость
+        проецированной метрики Хаусдорфа от битрейта. }
+        \label{img:pcc_arena_hd}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}{Результаты для цветов}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.49\linewidth]{assets/approx_y_psnr.png}
+        \caption{ Зависимость Y'-PSNR от битрейта. }
+        \label{img:pcc_arena_y_psnr}
+    \end{figure}
+  \end{frame}
+
+  \begin{frame}{Выводы и дальнейшие шаги}
+    В данной работе был проведён анализ существующих систем оценки методов сжатия
+    облаков точек и их атрибутов. Разработана программа для оценки качества облака
+    точек при наличии оригинального облака точек. Произведён сравнительный анализ
+    кодеков Draco и TMC13. Полученные данные позволяют судить о качестве сжатия
+    облаков точек данными кодеками при различной степени сжатия. Разработанное
+    решение упростит оценку методов сжатия атрибутов облаков точек и может быть
+    полезным исследователям, ведущим разработки в данной области.
+
+    В рамках дальнейшей работы в программу могут быть добавлены метрики, учитывающие
+    более высокоуровневые признаки облаков точек и дающие более подробную оценку
+    качества их сжатия.
   \end{frame}
 \end{document}
