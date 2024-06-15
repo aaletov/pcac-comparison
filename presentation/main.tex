@@ -231,10 +231,55 @@
     \end{figure}
   \end{frame}
 
-  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  \begin{frame}{Метрики разработанного ПО}
-  Тут про объем реализации (1к строк кода), тесты, CI/CD, много картинок, пару
-  красивых слов.
+  \begin{frame}{Детали реализации}
+    \vspace{\baselineskip}
+    % Тут про объем реализации (1к строк кода), тесты, CI/CD, много картинок, пару
+    % красивых слов.
+    \begin{columns}
+      \column{0.2\linewidth}
+        \begin{scriptsize}
+          Стек:
+          \begin{itemize}
+            \item Python 3.8.1
+            \item Open3D 0.18.0
+            \item NumPy 1.24
+            \item click 8.1.7
+          \end{itemize}
+          Линтеры:
+          \begin{itemize}
+            \item pylint
+            \item flake8
+          \end{itemize}
+          Тестирование:
+          \begin{itemize}
+            \item pytest
+          \end{itemize}
+          CI/CD:
+          \begin{itemize}
+            \item GitHub Actions
+          \end{itemize}
+          Объем реализации:
+          \begin{itemize}
+            \item 1206 строк
+          \end{itemize}
+        \end{scriptsize}
+      \column{0.7\linewidth}
+        \scalebox{0.8}{
+          \begin{minipage}{1.20\textwidth}
+            \begin{figure}
+              \centering
+              \includegraphics[width=0.7\linewidth]{assets/coverage.png}
+              \caption{Покрытие тестами}
+            \end{figure}
+            \vspace{-1\baselineskip}
+            \begin{figure}
+              \centering
+              \includegraphics[width=0.7\linewidth]{assets/actions_status.png}
+              \caption{Статус CI/CD}
+            \end{figure}
+          \end{minipage}
+        }
+    \end{columns}
   \end{frame}
 
   \begin{frame}{PCCArena}
